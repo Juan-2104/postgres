@@ -23,6 +23,13 @@ fastify.register(require('@fastify/swagger'), {
       title: 'G6Flow - BEI',
       decription: 'Backend Integration componentes to allow interaction with DB objetcs',
       version: '1.0.0'
+    },
+    securityDefinitions: {
+      apiKey: {
+        type: 'apiKey',
+        name: 'apiKey',
+        in: 'header'
+      }
     }
   }
 })
