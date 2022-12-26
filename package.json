@@ -23,6 +23,7 @@
     "fastify-swagger": "^5.2.0",
     "node-cache": "^5.1.2",
     "node-postgres": "^0.6.2",
+    "pg": "^8.8.0",
     "sqlite3": "^5.1.4",
     "uuid": "^9.0.0",
     "winston": "^3.8.2"

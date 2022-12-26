@@ -53,7 +53,7 @@ fastify.register(require('@fastify/swagger-ui'), {
 // Registro de rutas
 fastify.register(require('./routes/config'), { prefix: '/bei-admin/v1' })
 logger.debug(`Rutas de configuración cargadas`)
-// fastify.register(require('./routes/bei-services'), {prefix: '/integration/v1'})
+fastify.register(require('./routes/bei-services'), {prefix: '/integration/v1'})
 
 fastify.listen({ port: process.env.PORT, host: process.env.IP })
 logger.info(`Servicio iniciado correctamente en ${process.env.IP}:${process.env.PORT}`)

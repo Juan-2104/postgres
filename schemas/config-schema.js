@@ -150,10 +150,6 @@ const TableConfSchema = {
         port: { type: 'integer' },
         user: { type: 'string' },
         password: { type: 'string' },
-        fields: {
-            type: 'array',
-            items: FieldConfSchema
-        },
     },
     required: [
         'table',
@@ -162,7 +158,6 @@ const TableConfSchema = {
         'port',
         'user',
         'password',
-        'fields',
     ]
 }
 
