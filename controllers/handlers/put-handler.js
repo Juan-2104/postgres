@@ -21,8 +21,8 @@ module.exports =  async function PutHandler(req, reply) {
         logger.debug(`Entrando al POST de la tabla`)
         logger.debug(`Conectando a la base de datos`)
         const dbclient = await pool.connect()
-        req.query._id = `_id = '${req.params._id}'`
-        let consulta = `UPDATE ${beiConfigs.table} SET ${GetFields(req.body)} ${GetFilter(req.query.filter)}`
+        // req.query.filter = `${beiConfigs.identifier} = '${req.params._id}'`
+        let consulta = `UPDATE ${beiConfigs.table} SET ${GetFields(req.body)} where ${beiConfigs.identifier} = '${req.params._id}'`
         logger.debug(`Consulta de insercion ${consulta}`)
         logger.debug(`Valores de insercion ${Object.values(req.body)}`)
         let result = await dbclient.query({text: consulta, values: Object.values(req.body)})

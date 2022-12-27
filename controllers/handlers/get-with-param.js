@@ -17,9 +17,12 @@ module.exports =  async function GetWithParamsHandler(req, reply) {
     try {
         logger.debug(`Entrando al GET de la tabla`)
         logger.debug(`Conectando a la base de datos`)
+        logger.debug(`ID Solicitado: ${req.params['_id']}`)
         const dbclient = await pool.connect()
-        req.query._id = `_id = '${req.params._id}'`
-        let results = await dbclient.query(`select ${GetFields(req.query.fields)} from ${beiConfigs.table} ${GetFilter(req.query.filter)}`)
+        // req.query.filter = `${beiConfigs.identifier} = '${req.params._id}'`
+        let consulta = `select ${GetFields(req.query.fields)} from ${beiConfigs.table}  where \"${beiConfigs.identifier}\" = $1`
+        logger.debug(`Consulta de insercion ${consulta}`)
+        let results = await dbclient.query(consulta, [req.params._id])
         logger.debug(`Ejecución de la consulta, EXITOSA. Filas obtenidas: ${results.rowCount}`)
         dbclient.release()
         reply.code(200)
