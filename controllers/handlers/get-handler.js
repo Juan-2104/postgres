@@ -19,10 +19,10 @@ function GetFilter(filter) {
 
 module.exports = async function GetHandler(req, reply) {
     try {
-        logger.debug(`Entrando al GET de la tabla`)
+        logger.debug(`Entrando al GET de la tabla ${JSON.stringify(req.routeConfig.table)}`)
         logger.debug(`Conectando a la base de datos`)
         const dbclient = await pool.connect()
-        let results = await dbclient.query(`select ${GetFields(req.query.fields)} from ${beiConfigs.table} ${GetFilter(req.query.filter)}`)
+        let results = await dbclient.query(`select ${GetFields(req.query.fields)} from ${req.routeConfig.table} ${GetFilter(req.query.filter)}`)
         logger.debug(`Ejecución de la consulta, EXITOSA. Filas obtenidas: ${results.rowCount}`)
         dbclient.release()
         reply.code(200)

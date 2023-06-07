@@ -3,7 +3,8 @@ dotenv.config();
 const logger = require('../../utils/bei-logger');
 const beiConfigs = require('../../data/config.json')
 // Configuración del pool de conexiones.
-const pool = require('./connection-pool')
+const pool = require('./connection-pool');
+const { isJson, serializeValues } = require('../../utils/json-eval');
 
 function GetFields(row) {
     return Object.keys(row).join(', ')
@@ -23,10 +24,11 @@ module.exports = async function PostHandler(req, reply) {
         logger.debug(`Entrando al POST de la tabla`)
         logger.debug(`Conectando a la base de datos`)
         const dbclient = await pool.connect()
-        let consulta = `INSERT INTO ${beiConfigs.table} (${GetFields(req.body)}) VALUES (${GetParams(req.body)})`
+        let consulta = `INSERT INTO ${req.routeConfig.table} (${GetFields(req.body)}) VALUES (${GetParams(req.body)})`
         logger.debug(`Consulta de insercion ${consulta}`)
-        logger.debug(`Valores de insercion ${Object.values(req.body)}`)
-        let result = await dbclient.query({text: consulta, values: Object.values(req.body)})
+        let values = serializeValues(req)
+        logger.debug(`Valores de insercion ${values}`)
+        let result = await dbclient.query({text: consulta, values: values})
         dbclient.release()
         reply.code(200)
         reply.send({status: 'OK', action: 'insert'})

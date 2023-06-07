@@ -142,24 +142,44 @@ const PutMetaDataSchema = {
 const TableConfSchema = {
     type: 'object',
     properties: {
-        id: { type: 'string' },
-        table: { type: 'string' },
+        identifier: { type: 'string' },
+        name: { type: 'string' },
         description: { type: 'string' },
+        methods: {
+            type: 'object',
+            properties: {
+                get: {type: 'object'},
+                getid: {type: 'object'},
+                post: {type: 'object'},
+                put: {type: 'object'},
+                delete: {type: 'object'}
+            }
+        }
+        
+    },
+    required: [
+        'name'
+    ]
+}
+
+const AllConfSchema = {
+    type: 'object',
+    properties: {
+        '_id': {type: 'string'},
         database: { type: 'string' },
         host: { type: 'string' },
         port: { type: 'integer' },
         user: { type: 'string' },
         password: { type: 'string' },
-    },
-    required: [
-        'table',
-        'database',
-        'host',
-        'port',
-        'user',
-        'password',
-    ]
+        description: {type: 'string'},
+        tables: {
+            type: 'array',
+            items: TableConfSchema
+        }
+    }
 }
+
+
 
 // Esquema para el listado de la configuración del BEI.
 const GetListConfigSchema = {
@@ -219,7 +239,7 @@ const PostConfigSchema = {
     schema: {
         description: 'Creación de objetos de configuración para este tipo específico de integración',
         tags: ['BEI-Configuration'],
-        body: TableConfSchema,
+        body: AllConfSchema,
         headers: {
             type: 'object',
             properties: {

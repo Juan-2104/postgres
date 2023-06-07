@@ -10,9 +10,9 @@ dotenv.config();
 
 function SelectHandler(method) {
     switch (method) {
-        case 'get': 
+        case 'get':
             return getHandler;
-        case 'getid': 
+        case 'getid':
             return getWithParam;
         case 'post':
             return postHandler;
@@ -25,8 +25,8 @@ function SelectHandler(method) {
     }
 }
 
-function UsesID(method ) {
-    if (method === 'getid' || method === 'put' || method === 'delete' ) {
+function UsesID(method) {
+    if (method === 'getid' || method === 'put' || method === 'delete') {
         return "/:_id"
     } else {
         return ""
@@ -42,25 +42,32 @@ function GetMethod(method) {
 }
 
 module.exports = async function (fastify, options, done) {
-    try{
-        let prefix_url = process.env.API_PREFIX||'/bei-default'
+    try {
+        let prefix_url = process.env.API_PREFIX || '/bei-default'
         logger.debug(`El prefijo cargado ${prefix_url}`)
         let data = fs.readFileSync('data/config.json', 'utf-8')
         let metadata = await JSON.parse(data)
         logger.debug(`Metadata ${JSON.stringify(metadata)}`)
-        let methods = Object.keys(metadata.methods)
-        logger.debug(`Metodos cargados: ${methods}`)
-        methods.forEach((method) => {
-            let url = `${prefix_url}/${metadata.database}/${metadata.table}${UsesID(method)}`
-            let route = {
-                url,
-                method: GetMethod(method),
-                schema: metadata.methods[method],
-                handler: SelectHandler(method)
-            }
-            fastify.route(route)
+        let tables = metadata.tables;
+        tables.forEach(table => {
+            let methods = Object.keys(table.methods)
+            logger.debug(`Metodos cargados: ${methods}`)
+            methods.forEach((method) => {
+                let url = `/${metadata.database}/${table.name}${UsesID(method)}`
+                let route = {
+                    url,
+                    method: GetMethod(method),
+                    schema: table.methods[method],
+                    handler: SelectHandler(method),
+                    config: { 
+                        table: table.name, 
+                        identifier: table.identifier 
+                    }
+                }
+                fastify.route(route)
+            })
         })
-        done()
+
     } catch (error) {
         logger.error(`There was an error on loading routes: ${error.message}`)
     }
