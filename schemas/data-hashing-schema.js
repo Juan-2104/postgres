@@ -1,7 +1,7 @@
 const GetHealthSchema = {
     schema: {
         description: 'Servicio de verificación de estado del componente de integración',
-        tags: ['BEI-Utils', 'BEI-Health'],
+        tags: ['BEI-Utils'],
         
     }
 }
@@ -30,7 +30,7 @@ const BodyHashSchema = {
 const PostAES256CrytoSchema= {
     schema: {
         description: 'Utileria para encriptar en AES256 cadenas de texto.',
-        tags: ['BEI-Utils', 'BEI-Crypto'],
+        tags: ['BEI-Utils'],
         body: BodyCryptoSchema,
         headers: {
             type: 'object',
@@ -52,7 +52,7 @@ const PostAES256CrytoSchema= {
 const PostAES256DeCrytoSchema= {
     schema: {
         description: 'Utileria para desencriptar en AES256 cadenas de texto.',
-        tags: ['BEI-Utils', 'BEI-Crypto'],
+        tags: ['BEI-Utils'],
         body: BodyCryptoSchema,
         headers: {
             type: 'object',
@@ -74,7 +74,7 @@ const PostAES256DeCrytoSchema= {
 const PostHashMD5Schema= {
     schema: {
         description: 'Utileria para generar hashes MD5 con cadenas de texto.',
-        tags: ['BEI-Utils', 'BEI-Hashing'],
+        tags: ['BEI-Utils'],
         body: BodyHashSchema,
         headers: {
             type: 'object',
@@ -96,7 +96,7 @@ const PostHashMD5Schema= {
 const PostHasSHA56Schema= {
     schema: {
         description: 'Utileria para generar hashes SHA256  con cadenas de texto.',
-        tags: ['BEI-Utils', 'BEI-Hashing'],
+        tags: ['BEI-Utils'],
         body: BodyHashSchema,
         headers: {
             type: 'object',
