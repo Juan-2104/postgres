@@ -25,7 +25,7 @@ function SelectHandler(method) {
     }
 }
 
-function UsesID(method) {
+function UsesID(method, identifier) {
     if (method === 'getid' || method === 'put' || method === 'delete') {
         return "/:_id"
     } else {
@@ -53,7 +53,7 @@ module.exports = async function (fastify, options, done) {
             let methods = Object.keys(table.methods)
             logger.debug(`Metodos cargados: ${methods}`)
             methods.forEach((method) => {
-                let url = `/${metadata.database}/${table.name}${UsesID(method)}`
+                let url = `/${metadata.database}/${table.name}${UsesID(method,table.identifier)}`
                 let route = {
                     url,
                     method: GetMethod(method),

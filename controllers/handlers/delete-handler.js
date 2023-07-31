@@ -15,7 +15,7 @@ module.exports =  async function DeleteHandler(req, reply) {
         logger.debug(`Conectando a la base de datos`)
         const dbclient = await pool.connect()
         // req.query.filter = `${beiConfigs.identifier} = '${req.params._id}'`
-        let results = await dbclient.query(`DELETE from ${beiConfigs.table}  where ${beiConfigs.identifier} = '${req.params._id}'`)
+        let results = await dbclient.query(`DELETE from ${req.routeConfig.table}  where ${req.routeConfig.identifier} = '${req.params[req.routeConfig.identifier]}'`)
         logger.debug(`Ejecución de la consulta, EXITOSA. Filas ELIMINADAS: ${results.rowCount}`)
         dbclient.release()
         reply.code(200)

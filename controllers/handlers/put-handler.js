@@ -23,7 +23,7 @@ module.exports =  async function PutHandler(req, reply) {
         logger.debug(`Conectando a la base de datos`)
         const dbclient = await pool.connect()
         // req.query.filter = `${beiConfigs.identifier} = '${req.params._id}'`
-        let consulta = `UPDATE ${req.routeConfig.table} SET ${GetFields(req.body)} where ${req.routeConfig.identifier} = '${req.params._id}'`
+        let consulta = `UPDATE ${req.routeConfig.table} SET ${GetFields(req.body)} where ${req.routeConfig.identifier} = '${req.params[req.routeConfig.identifier]}'`
         logger.debug(`Consulta de insercion ${consulta}`)
         let values = serializeValues(req)
         logger.debug(`Valores de actualización ${values}`)
