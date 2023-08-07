@@ -1,0 +1,17 @@
+version: "3"
+services:
+  bei-postgres:
+    image: "g6flow-bei-postgres"
+    ports:
+      - "9445:9445"
+    volumes:
+      - ./data:/usr/bei/data
+      - ./certs:/usr/bei/certs
+    environment:
+      BEI_COMPONENT: BEI-POSTGRESDB
+      IP: 0.0.0.0
+      PORT: 9445
+      CACHE_TTL: 5000
+      LOG_LEVEL: debug
+      APIKEY: as8da7sda6sd4as45ds67d7s7da9s090gf
+      API_PREFIX: /bei-demo
