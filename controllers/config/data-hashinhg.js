@@ -1,8 +1,10 @@
 const crypto = require('crypto');
 const { EncryptData, DecryptData } = require('../../utils/crypto-utils');
+const { ValidaAPIKey, NotAuthorizedError } = require('../../utils/secutils');
 
 async function PostAes256Crypto(req, reply) {
     try {
+        await ValidaAPIKey(req)
         const phrase = req.body.phrase;
         const key = req.body.key||process.env.SERIAL;
         let output = EncryptData(phrase, key)
@@ -11,7 +13,7 @@ async function PostAes256Crypto(req, reply) {
             output
         })
     }catch (error) {
-        reply.code(500)
+        reply.code(error.status?error.status:500)
         reply.send({
             errorMessage: error.message
         })
@@ -20,6 +22,7 @@ async function PostAes256Crypto(req, reply) {
 
 async function PostAes256DeCrypto(req, reply) {
     try {
+        await ValidaAPIKey(req)
         const phrase = req.body.phrase;
         const key = req.body.key||process.env.SERIAL;
         let output = DecryptData(phrase, key)
@@ -28,7 +31,7 @@ async function PostAes256DeCrypto(req, reply) {
             output
         })
     }catch (error) {
-        reply.code(500)
+        reply.code(error.status?error.status:500)
         reply.send({
             errorMessage: error.message
         })
@@ -37,6 +40,7 @@ async function PostAes256DeCrypto(req, reply) {
 
 async function PostHashMD5(req,reply){
     try {
+        await ValidaAPIKey(req)
         const phrase = req.body.phrase;
         let output = crypto.createHash('md5').update(phrase).digest('hex');
         reply.code(200);
@@ -44,7 +48,7 @@ async function PostHashMD5(req,reply){
             output
         })
     }catch (error) {
-        reply.code(500)
+        reply.code(error.status?error.status:500)
         reply.send({
             errorMessage: error.message
         })
@@ -53,6 +57,7 @@ async function PostHashMD5(req,reply){
 
 async function PostHashSha256(req,reply){
     try {
+        await ValidaAPIKey(req)
         const phrase = req.body.phrase;
         let output = crypto.createHash('sha256').update(phrase).digest('hex');
         reply.code(200);
@@ -60,7 +65,7 @@ async function PostHashSha256(req,reply){
             output
         })
     }catch (error) {
-        reply.code(500)
+        reply.code(error.status?error.status:500)
         reply.send({
             errorMessage: error.message
         })

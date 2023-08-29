@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const logger = require('../../utils/bei-logger');
 const beiConfigs = require('../../data/config.json')
+const {ValidaAPIKey, NotAuthorizedError} = require('../../utils/secutils');
 // Configuración del pool de conexiones.
 const pool = require('./connection-pool');
 const { isJson, serializeValues } = require('../../utils/json-eval');
@@ -21,10 +22,11 @@ function GetParams(row) {
 
 module.exports = async function PostHandler(req, reply) {
     try {
+        await ValidaAPIKey(req)
         logger.debug(`Entrando al POST de la tabla`)
         logger.debug(`Conectando a la base de datos`)
         const dbclient = await pool.connect()
-        let consulta = `INSERT INTO ${req.routeConfig.table} (${GetFields(req.body)}) VALUES (${GetParams(req.body)})`
+        let consulta = `INSERT INTO ${req.routeConfig.dbschema}.${req.routeConfig.table} (${GetFields(req.body)}) VALUES (${GetParams(req.body)})`
         logger.debug(`Consulta de insercion ${consulta}`)
         let values = serializeValues(req)
         logger.debug(`Valores de insercion ${values}`)
@@ -34,7 +36,7 @@ module.exports = async function PostHandler(req, reply) {
         reply.send({status: 'OK', action: 'insert'})
     } catch (error) {
         logger.error(`PostHandler::Ocurrio un error al intentar la operación:: ${error.message}`)
-        reply.code(500)
+        reply.code(error.status?error.status:500)
         reply.send({
             errorMessage: error.message
         })
