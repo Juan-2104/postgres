@@ -21,13 +21,8 @@ const fastify = require("fastify")({
 fastify.register(require('@fastify/swagger'), {
   swagger: {
     info: {
-<<<<<<< HEAD
       title: packageJson.name,
       decription: packageJson.description,
-=======
-      title: packageJson.description,
-      decription: 'Backend Integration componentes to allow interaction with DB objetcs',
->>>>>>> 9ddc977b58969e3c6bd7cf49711213dfba1b263b
       version: packageJson.version
     },
     securityDefinitions: {

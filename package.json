@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
   "name": "g6flow-bei-postgres",
-=======
-  "name": "bei-postgres",
->>>>>>> 9ddc977b58969e3c6bd7cf49711213dfba1b263b
   "version": "1.0.1",
   "description": "G6Flow - Backend Integrator for PostgreSQL",
   "main": "index.js",
