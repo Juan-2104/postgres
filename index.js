@@ -2,6 +2,7 @@ const https = require('https');
 const fs = require('fs')
 const dotenv = require('dotenv');
 const logger = require('./utils/bei-logger')
+const packageJson = require('./package.json')
 dotenv.config();
 
 const fastify = require("fastify")({
@@ -20,9 +21,9 @@ const fastify = require("fastify")({
 fastify.register(require('@fastify/swagger'), {
   swagger: {
     info: {
-      title: 'G6Flow - BEI',
+      title: packageJson.description,
       decription: 'Backend Integration componentes to allow interaction with DB objetcs',
-      version: '1.0.0'
+      version: packageJson.version
     },
     securityDefinitions: {
       apiKey: {

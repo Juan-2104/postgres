@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 const logger = require('../../utils/bei-logger');
 const beiConfigs = require('../../data/config.json')
+const {ValidaAPIKey, NotAuthorizedError} = require('../../utils/secutils');
 // Configuración del pool de conexiones.
 const pool = require('./connection-pool')
 
@@ -19,17 +20,18 @@ function GetFilter(filter) {
 
 module.exports = async function GetHandler(req, reply) {
     try {
+        await ValidaAPIKey(req)
         logger.debug(`Entrando al GET de la tabla ${JSON.stringify(req.routeConfig.table)}`)
         logger.debug(`Conectando a la base de datos`)
         const dbclient = await pool.connect()
-        let results = await dbclient.query(`select ${GetFields(req.query.fields)} from ${req.routeConfig.table} ${GetFilter(req.query.filter)}`)
+        let results = await dbclient.query(`select ${GetFields(req.query.fields)} from ${req.routeConfig.dbschema}.${req.routeConfig.table} ${GetFilter(req.query.filter)}`)
         logger.debug(`Ejecución de la consulta, EXITOSA. Filas obtenidas: ${results.rowCount}`)
         dbclient.release()
         reply.code(200)
         reply.send(results.rows)
     } catch (error) {
         logger.error(`GetHandler::Ocurrio un error al intentar la operación:: ${error.message}`)
-        reply.code(500)
+        reply.code(error.status?error.status:500)
         reply.send({
             errorMessage: error.message
         })

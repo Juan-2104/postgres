@@ -1,7 +1,7 @@
 {
   "name": "bei-postgres",
-  "version": "1.0.0",
-  "description": "Backend Integrator for G6 Flow",
+  "version": "1.0.1",
+  "description": "G6Flow - Backend Integrator for PostgreSQL",
   "main": "index.js",
   "scripts": {
     "devel": "nodemon ./index.js",
